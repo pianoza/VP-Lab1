@@ -1,0 +1,71 @@
+\documentclass[a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{subfigure}
+\usepackage{color}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyvrb}
+\usepackage{bera}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+ 
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0em}
+
+\usepackage{listings}
+\usepackage{color} %red, green, blue, yellow, cyan, magenta, black, white
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+% Using typewriter font: \ttfamily inside \lstset
+\lstset{language=Matlab,%
+    %basicstyle=\color{red},
+    breaklines=true,%
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},%
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    stringstyle=\color{mylilas},
+    commentstyle=\color{mygreen},%
+    showstringspaces=false,%without this there will be a symbol in the places where there is a space
+    basicstyle=\small\ttfamily,
+    %numbers=left,%
+    numberstyle={\tiny \color{black}},% size of the numbers
+    numbersep=9pt, % this defines how far the numbers are from the text
+    tabsize=4,
+    emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+    %emph=[2]{word1,word2}, emphstyle=[2]{style},    
+}
+
+\begin{document}
+\title{Visual Perception Lab report \\ \#1 Corner detection}
+\author{Kaisar Kushibar\\
+Master of Computer VIsion and RoBOTics (ViBot)\\University of Girona (Girona)}
+
+\maketitle
+%------------------------------------
+
+\section{Summary of the practical work}
+In this laboratory work we implemented the Harris corner detector algorithm and this report is a summary of the steps that we carried out.\\
+
+First of all, we calculated measure of cornerness ($E$) and the approximation ($R$ - corner response) matrices of an image using the autocorrelation matrix ($M$). We compared execution time of calculation by finding eigenvalues with  approximation method and identified that the latter method is faster than the former. However, the result was opposite of that when we used MATLAB functions (\texttt{det} and \texttt{trace}) and we had to replace them with actual formulas. The reason of this is that MATLAB has been designed for working with a big matrices and not optimized for small (2x2) matrices.\\
+
+In the next step we chose 81 pixels with the highest values from the matrices $E$ and $R$ and plotted them on the image. The result was not as we expected, because high values might be concentrated around some corners. In order to avoid that, we applied local non-maximal suppression method to leave only one maximum value in a window sized $11\times 11$ and got a desired result. The results after using $E$ and $R$ were similar, accordingly we could conclude that the $R$ matrix is a good approximation of $E$.\\
+
+For the last part, we implemented sub-pixel accuracy method to find corner coordinates in sub-pixel level. In order to do that we selected 9 points around the corner including the corner itself, and fitted the following quadratic function: 
+$$
+f(x,y) = ax^2+by^2+cxy+dx+ey
+$$
+Then, we took the coordinates of the maximum of the fitted function. However, the result did not bring significant improvements.\\
+
+Finally, this practical work was very useful to solidify our knowledge about the Harris algorithm and to observe the results using different calculation methods.
+\end{document}
